@@ -11,19 +11,21 @@ version = "0.1.1"
 import os
 import sys
 from setuptools import setup
-
+from distutils import sysconfig
 
 long_description = """anyreadline tries to do the right thing and installs either 
-readline on MacOSX or pyreadline or Windows. 
-Or does nothing on Linux which comes in general with readline built-in"""
+pyreadline for Windows or gnureadline for other platforms if the stdlib version
+wasn't built in."""
 
 sysplat = str(sys.platform).lower()
+have_libreadline = sysconfig.get_config_var('HAVE_LIBREADLINE')
 
-install_requires = ['setuptools'] 
-if 'darwin' in sysplat:
-    install_requires += ['gnureadline']
-if 'win32' in sysplat:
-    install_requires += ['pyreadline'] 
+if not have_libreadline:
+    install_requires = ['setuptools'] 
+    if 'win32' in sysplat:
+        install_requires += ['pyreadline'] 
+    else:
+        install_requires += ['gnureadline']
 
 setup(
     name = name,
