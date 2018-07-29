@@ -1,0 +1,17 @@
+language: generic
+
+os: osx
+
+sudo: required
+
+compiler: clang
+
+script:
+  - curl -OL https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz
+  - tar xzvf Python-3.7.0.tar.xz > /dev/null
+  - cd Python-3.7.0
+  - ./configure --prefix=/usr/local --disable-readline
+  - make > /dev/null
+  - make install > /dev/null
+  - python3 --version
+  - python3 -c 'import sysconfig; print(sysconfig.get_config_vars("HAVE_LIBREADLINE"))'
